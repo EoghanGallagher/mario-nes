@@ -18,6 +18,8 @@ public class QuestionBlock : MonoBehaviour
 	
 
 	private bool isOkToBounce;
+
+	private bool isBusy;
 	private bool isFinishedBounce;
 	private bool isCoin;
 	private Animator _anim;
@@ -67,7 +69,8 @@ public class QuestionBlock : MonoBehaviour
 		
 		if( Input.GetMouseButtonDown( 0 ) && _bounceState != BounceState.Up )
 		{
-			_bounceState = BounceState.Up;	
+			if( isBusy == false )
+				_bounceState = BounceState.Up;	
 		}
 		
 		
@@ -94,7 +97,7 @@ public class QuestionBlock : MonoBehaviour
 	private void Bounce()
 	{
 		
-		
+		isBusy = true;
 		currentPosition = transform.position;
 
 		if( coinCount == 1 )
@@ -126,6 +129,7 @@ public class QuestionBlock : MonoBehaviour
 				{
 					if( coinCount == 1 )
 						isOkToBounce = false;
+						
 
 					//Rigidbody2D r2d = GetComponent<Rigidbody2D>();
 					//r2d.isKinematic = true;
@@ -183,7 +187,7 @@ public class QuestionBlock : MonoBehaviour
 			}
 			else
 			{
-
+				isBusy = false;
 				break;
 
 			}
@@ -255,7 +259,7 @@ public class QuestionBlock : MonoBehaviour
 
 		}
 
-		
+		isBusy = false;
 		coinCount --;
 		Debug.Log( "All Done.." );
 	}
@@ -277,6 +281,12 @@ public class QuestionBlock : MonoBehaviour
 
 			break;
 		}
+	}
+
+	public void TriggerBounce()
+	{
+		if( isBusy == false )
+		_bounceState = BounceState.Up;	
 	}
 
 
