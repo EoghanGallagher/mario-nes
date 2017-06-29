@@ -11,13 +11,14 @@ public class QuestionBlock : MonoBehaviour
 	// Use this for initialization
 
 	[SerializeField]
-	int coinCount = 5;
+	private int coinCount;
+
+	[SerializeField]
+	private int option;
+	
 
 	private bool isOkToBounce;
-	private bool isFirstBounce;
-
-	private bool isPrize;
-
+	private bool isFinishedBounce;
 	private bool isCoin;
 	private Animator _anim;
 
@@ -30,8 +31,12 @@ public class QuestionBlock : MonoBehaviour
 	[SerializeField]
 	private GameObject coin;
 
-	public float _bounceYDist = 0.15f;
-	public float _bounceVelocity = 1f;
+
+	[SerializeField]
+	private GameObject powerUp;
+
+	public float _bounceYDist = 0.175f;
+	public float _bounceVelocity = 1.5f;
 
 	public enum BounceState 
 	{
@@ -45,9 +50,9 @@ public class QuestionBlock : MonoBehaviour
 	private void Start()
 	{
 		isOkToBounce = true;
-		isFirstBounce = true;
+		isFinishedBounce = true;
 
-		isPrize = true;
+	
 		isCoin = true;
 		_anim = GetComponent<Animator>();
 		_posBeforeBounce = transform.position;
@@ -60,18 +65,27 @@ public class QuestionBlock : MonoBehaviour
 		
 		
 		
-		if( Input.GetMouseButtonDown( 0 ) )
+		if( Input.GetMouseButtonDown( 0 ) && _bounceState != BounceState.Up )
 		{
-			_bounceState = BounceState.Up;
+			_bounceState = BounceState.Up;	
 		}
 		
 		
 		if( _bounceState != BounceState.None && isOkToBounce )
 		{
-			if( coinCount >= 0 )
+			if( coinCount > 0 )
 			{
 				Bounce();
 				
+			}
+			else
+			{
+				if( isFinishedBounce )
+				{
+					_anim.enabled = false;
+					SetSprite( _emptyBlock );
+					isFinishedBounce = false;
+				}
 			}
 		
 		}
@@ -83,11 +97,12 @@ public class QuestionBlock : MonoBehaviour
 		
 		currentPosition = transform.position;
 
-		if( coinCount == 0 )
+		if( coinCount == 1 )
 		{
-			_anim.enabled = false;
-			SetSprite( _emptyBlock );
-			isFirstBounce = false;
+				_anim.enabled = false;
+				SetSprite( _emptyBlock );
+				isFinishedBounce = false;
+				
 		}
 
 		if( _bounceState == BounceState.Up )
@@ -109,7 +124,8 @@ public class QuestionBlock : MonoBehaviour
 				}
 				else
 				{
-					//isOkToBounce = false;
+					if( coinCount == 1 )
+						isOkToBounce = false;
 
 					//Rigidbody2D r2d = GetComponent<Rigidbody2D>();
 					//r2d.isKinematic = true;
@@ -117,11 +133,8 @@ public class QuestionBlock : MonoBehaviour
 					_bounceState = BounceState.None;
 					transform.position = _posBeforeBounce;
 
+					PowerUpType( option );
 				
-				
-					StartCoroutine( "LoadCoin" );
-			
-			
 				}
 		}
 
@@ -147,6 +160,43 @@ public class QuestionBlock : MonoBehaviour
 
 	}
 
+
+	//Powerups
+	private IEnumerator LoadPowerUps()
+	{
+		float yDist = 0.3f;
+		float powerUpVelocity = 1.0f;
+		
+		Vector3 currentPosition = Vector3.zero;
+		
+		Transform powerUpTransform = powerUp.transform;
+		
+		Vector3 positionBefore = powerUpTransform.position;
+
+		while( true )
+		{
+			currentPosition = powerUp.transform.position;
+			
+			if( currentPosition.y <= positionBefore.y + yDist )
+			{
+				powerUpTransform.Translate( powerUpVelocity * Vector2.up * Time.fixedDeltaTime );
+			}
+			else
+			{
+
+				break;
+
+			}
+
+			yield return null;
+		}
+
+		
+
+	}
+
+
+	//Coins 
 	private IEnumerator LoadCoin()
 	{
 		
@@ -205,8 +255,28 @@ public class QuestionBlock : MonoBehaviour
 
 		}
 
+		
 		coinCount --;
 		Debug.Log( "All Done.." );
+	}
+
+
+	private void PowerUpType( int option )
+	{
+		switch( option )
+		{
+			case 0:
+						
+				StartCoroutine( "LoadCoin" );
+					
+			break;
+
+			case 1:
+					
+				StartCoroutine( "LoadPowerUps" );
+
+			break;
+		}
 	}
 
 
