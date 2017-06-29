@@ -74,6 +74,7 @@
      <Compile Include="Assets\CreativeSpore\SuperTilemapEditor\Scripts\Utils\TilemapDrawingUtils.cs" />
      <Compile Include="Assets\CreativeSpore\SuperTilemapEditor\Scripts\Utils\TilemapUtils.cs" />
      <Compile Include="Assets\QuestionBlock.cs" />
+     <Compile Include="Assets\TestMario.cs" />
      <None Include="Assets\CreativeSpore\SuperTilemapEditor\Extra\Tileset - Samples\Tiled - Tmx Import\license.txt" />
      <None Include="Assets\CreativeSpore\SuperTilemapEditor\changelog.txt" />
  <Reference Include="Facebook.Unity.Settings">

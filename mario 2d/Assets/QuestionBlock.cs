@@ -11,10 +11,21 @@ public class QuestionBlock : MonoBehaviour
 	// Use this for initialization
 
 	private bool isOkToBounce;
+	private bool isFirstBounce;
+
+	private bool isPrize;
+
+	private bool isCoin;
 	private Animator _anim;
 
 	private Vector3 currentPosition;
 	private Vector3 _posBeforeBounce;
+
+	[SerializeField]
+	private Sprite _emptyBlock;
+
+	[SerializeField]
+	private GameObject coin;
 
 	public float _bounceYDist = 0.15f;
 	public float _bounceVelocity = 1f;
@@ -31,6 +42,10 @@ public class QuestionBlock : MonoBehaviour
 	private void Start()
 	{
 		isOkToBounce = true;
+		isFirstBounce = true;
+
+		isPrize = true;
+		isCoin = true;
 		_anim = GetComponent<Animator>();
 		_posBeforeBounce = transform.position;
 
@@ -41,7 +56,16 @@ public class QuestionBlock : MonoBehaviour
 	{
 		if( _bounceState != BounceState.None && isOkToBounce )
 		{
+			if( isFirstBounce )
+			{
+				_anim.enabled = false;
+				SetSprite( _emptyBlock );
+				isFirstBounce = false;
+			}
+			
 			Bounce();
+
+		
 		}
 	}
 
@@ -74,9 +98,10 @@ public class QuestionBlock : MonoBehaviour
 
 					Rigidbody2D r2d = GetComponent<Rigidbody2D>();
 					r2d.isKinematic = true;
-					
-				 
 
+					StartCoroutine( "LoadCoin" );
+			
+			
 				}
 		}
 
@@ -84,6 +109,11 @@ public class QuestionBlock : MonoBehaviour
 
 	}
 
+	private void SetSprite( Sprite sprite )
+	{
+		Debug.Log( "Sprite : " + sprite.name );
+		gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+	}
 
 	private void OnTriggerEnter2D( Collider2D other ) 
 	{
@@ -95,6 +125,67 @@ public class QuestionBlock : MonoBehaviour
 			_bounceState = BounceState.Up;
 		}
 
+	}
+
+	private IEnumerator LoadCoin()
+	{
+		
+
+		float yDist = 1.25f;
+		float coinVelocity = 4.0f;
+
+		bool moveDown = false;
+
+		Transform coinTransform = coin.transform;
+
+		Vector3 currentPosition = Vector3.zero;
+		Vector3 positionBefore = coinTransform.position;
+		//Instantiate game object ( Coin ) at position of empty block. 
+
+		//
+		
+		coin.SetActive( true );
+
+		while( true )
+		{
+			currentPosition = coin.transform.position;
+
+			
+			
+			if( currentPosition.y <= positionBefore.y + yDist  && !moveDown )
+			{
+				coinTransform.Translate( coinVelocity * Vector2.up * Time.fixedDeltaTime );
+			}
+			else
+			{
+				Debug.Log( "Thats as far as i go..." );
+				moveDown = true;
+
+			}
+
+
+			if( moveDown )
+			{
+				if( currentPosition.y >= ( positionBefore.y + 0.5f ) )
+				{
+					coinTransform.Translate( coinVelocity * Vector2.down * Time.fixedDeltaTime );
+				}
+				else
+				{
+					coin.SetActive( false );
+
+					coinTransform = gameObject.transform;
+
+
+					yield break;
+				}
+			}
+
+			yield return null;
+
+		}
+
+		Debug.Log( "All Done.." );
 	}
 
 
