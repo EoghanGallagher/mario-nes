@@ -10,6 +10,9 @@ public class QuestionBlock : MonoBehaviour
 
 	// Use this for initialization
 
+	[SerializeField]
+	int coinCount = 5;
+
 	private bool isOkToBounce;
 	private bool isFirstBounce;
 
@@ -54,24 +57,38 @@ public class QuestionBlock : MonoBehaviour
 
 	private void Update()
 	{
+		
+		
+		
+		if( Input.GetMouseButtonDown( 0 ) )
+		{
+			_bounceState = BounceState.Up;
+		}
+		
+		
 		if( _bounceState != BounceState.None && isOkToBounce )
 		{
-			if( isFirstBounce )
+			if( coinCount >= 0 )
 			{
-				_anim.enabled = false;
-				SetSprite( _emptyBlock );
-				isFirstBounce = false;
+				Bounce();
+				
 			}
-			
-			Bounce();
-
 		
 		}
 	}
 
 	private void Bounce()
 	{
+		
+		
 		currentPosition = transform.position;
+
+		if( coinCount == 0 )
+		{
+			_anim.enabled = false;
+			SetSprite( _emptyBlock );
+			isFirstBounce = false;
+		}
 
 		if( _bounceState == BounceState.Up )
 		{
@@ -92,13 +109,16 @@ public class QuestionBlock : MonoBehaviour
 				}
 				else
 				{
+					//isOkToBounce = false;
+
+					//Rigidbody2D r2d = GetComponent<Rigidbody2D>();
+					//r2d.isKinematic = true;
+
 					_bounceState = BounceState.None;
 					transform.position = _posBeforeBounce;
-					isOkToBounce = false;
 
-					Rigidbody2D r2d = GetComponent<Rigidbody2D>();
-					r2d.isKinematic = true;
-
+				
+				
 					StartCoroutine( "LoadCoin" );
 			
 			
@@ -131,8 +151,8 @@ public class QuestionBlock : MonoBehaviour
 	{
 		
 
-		float yDist = 1.25f;
-		float coinVelocity = 4.0f;
+		float yDist = 1.5f;
+		float coinVelocity = 6.0f;
 
 		bool moveDown = false;
 
@@ -172,12 +192,12 @@ public class QuestionBlock : MonoBehaviour
 				}
 				else
 				{
+					
+					
+					coin.transform.position = gameObject.transform.position;
 					coin.SetActive( false );
 
-					coinTransform = gameObject.transform;
-
-
-					yield break;
+					break;
 				}
 			}
 
@@ -185,6 +205,7 @@ public class QuestionBlock : MonoBehaviour
 
 		}
 
+		coinCount --;
 		Debug.Log( "All Done.." );
 	}
 
