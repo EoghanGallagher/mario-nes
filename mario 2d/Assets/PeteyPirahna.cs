@@ -5,9 +5,9 @@ using UnityEngine;
 public class PeteyPirahna : MonoBehaviour {
 
 	[SerializeField]
-	private bool mirror;
+	private bool flipY;
 	private Vector2 _currentPosition;
-	private Vector2 _posBeforeMove;
+	private Vector2  _posBeforeMove;
 
 	[SerializeField]
 	private float _speed;
@@ -17,7 +17,7 @@ public class PeteyPirahna : MonoBehaviour {
 	// Use this for initialization
 	private void Start () 
 	{
-		_posBeforeMove = transform.position;
+		_posBeforeMove = transform.localPosition;
 
 		StartCoroutine( "Move" );
 	}
@@ -36,15 +36,14 @@ public class PeteyPirahna : MonoBehaviour {
 
 			while( true )
 			{
-				_currentPosition = transform.position;
+				_currentPosition = transform.localPosition;
 
-				if( _currentPosition.y >= _targetPosition.position.y )
+				if( _currentPosition.y >= _targetPosition.localPosition.y )
 				{
 					break;
 				}
 
-				transform.Translate ( Vector2.up * _speed * Time.deltaTime);
-				
+				transform.Translate ( Vector2.up * _speed * Time.deltaTime );
 				
 				yield return null;
 
@@ -54,14 +53,14 @@ public class PeteyPirahna : MonoBehaviour {
 
 			while( true )
 			{
-				_currentPosition = transform.position;
+				_currentPosition = transform.localPosition;
 
-				if( _currentPosition.y <= _posBeforeMove.y )
+				if( _currentPosition.y <= _posBeforeMove.y)
 				{
 					break;
 				}
 
-				transform.Translate (Vector2.down * _speed * Time.deltaTime);
+				transform.Translate ( Vector2.down * _speed * Time.deltaTime );
 
 				yield return null;
 			}
