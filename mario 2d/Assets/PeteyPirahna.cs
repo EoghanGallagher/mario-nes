@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PeteyPirahna : MonoBehaviour {
 
-	[SerializeField]
-	private bool flipY;
 	private Vector2 _currentPosition;
 	private Vector2  _posBeforeMove;
 
@@ -31,8 +29,7 @@ public class PeteyPirahna : MonoBehaviour {
 		while( true )
 		{
 		
-		    
-			 yield return delay;
+		    yield return delay;
 
 			while( true )
 			{
