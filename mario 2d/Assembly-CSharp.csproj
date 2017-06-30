@@ -73,6 +73,7 @@
      <Compile Include="Assets\CreativeSpore\SuperTilemapEditor\Scripts\Utils\HandlesEx.cs" />
      <Compile Include="Assets\CreativeSpore\SuperTilemapEditor\Scripts\Utils\TilemapDrawingUtils.cs" />
      <Compile Include="Assets\CreativeSpore\SuperTilemapEditor\Scripts\Utils\TilemapUtils.cs" />
+     <Compile Include="Assets\PeteyPirahna.cs" />
      <Compile Include="Assets\QuestionBlock.cs" />
      <Compile Include="Assets\RayCastTest.cs" />
      <Compile Include="Assets\TestMario.cs" />
