@@ -9,6 +9,7 @@ public class Goomba : MonoBehaviour
 	private bool _isBlocked;
 	private bool _isLeft;
 	private bool _isRight;
+	private bool _isAlive;
 
 	[SerializeField]
 	private LayerMask _enemyMask;
@@ -19,11 +20,11 @@ public class Goomba : MonoBehaviour
 	private float _myWidth;
 
 
-	private Animator _anim
+	private Animator _anim;
 
 	
 	
-	private WaitForSeconds _delay = new WaitForSeconds( 2.0f );
+	private WaitForSeconds _delay;
 	private Transform _transform;
 
 	private Vector2 currentDirection;
@@ -36,6 +37,8 @@ public class Goomba : MonoBehaviour
 	void Start () 
 	{
 		
+		_isAlive = true;
+		_delay = new WaitForSeconds( 2.0f );
 		_transform = gameObject.transform;
 		_myBody = GetComponent<Rigidbody2D>();
 		_myWidth = this.GetComponent<SpriteRenderer>().bounds.extents.x;
@@ -45,6 +48,15 @@ public class Goomba : MonoBehaviour
 
 	}
 
+	private void Update()
+	{
+		if( Input.GetMouseButtonDown( 0 ) )
+		{
+			Debug.Log( "DEath" );
+			
+			StartCoroutine( "Death" );
+		}
+	}
 
 	private void FixedUpdate()
 	{
@@ -100,10 +112,13 @@ public class Goomba : MonoBehaviour
 		}*/
 
 		//Move 
-		Vector2 myVal = _myBody.velocity;
-		myVal.x = -_transform.right.x * _speed;
-		_myBody.velocity = myVal;
-	
+		
+		if( _isAlive )
+		{ 
+			Vector2 myVal = _myBody.velocity;
+			myVal.x = -_transform.right.x * _speed;
+			_myBody.velocity = myVal;
+		}
 	}
 
 
@@ -120,6 +135,19 @@ public class Goomba : MonoBehaviour
 
 			yield return null;
 		}
+
+	}
+
+
+	private IEnumerator Death()
+	{
+		_isAlive = false;
+		_anim.SetBool( "Death" , true );
+
+		yield return new WaitForSeconds( 1.0f );
+		Destroy( this.gameObject );
+
+
 
 	}
 
