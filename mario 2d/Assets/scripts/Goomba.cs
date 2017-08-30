@@ -14,16 +14,18 @@ public class Goomba : MonoBehaviour
 	[SerializeField]
 	private LayerMask _enemyMask;
 
-	private Rigidbody2D _myBody;
-	
 	[SerializeField]
 	private float _myWidth;
 
+	[SerializeField]
+	private float _speed;
 
+
+	private Rigidbody2D _myBody;
+	
 	private Animator _anim;
 
-	
-	
+		
 	private WaitForSeconds _delay;
 	private Transform _transform;
 
@@ -31,8 +33,7 @@ public class Goomba : MonoBehaviour
 
 	private float _verticalPos;
 
-	[SerializeField]
-	private float _speed;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -139,6 +140,7 @@ public class Goomba : MonoBehaviour
 	}
 
 
+	//Move to SuperClass
 	private IEnumerator Death()
 	{
 		_isAlive = false;
