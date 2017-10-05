@@ -8,53 +8,79 @@ using UnityEngine;
 public class Player : MonoBehaviour 
 {
 
-	public float maxSpeed = 10;
-	bool facingRight = true;
-	private Rigidbody2D _rigidBody2d;
-
-	private bool isGrounded;
 	public Transform groundCheck;
-	float groundRadius = 0.2f;
 
-	[ SerializeField ]
-	private float _jumpForce = 700f;
+	public float timer = 0;
 
+	public float jumpForce;
+	public float jumpTime = 0.5f;
+
+	public float fallMultiplier = 3.0f;
+	public float lowFallMultiplier = 2.0f;
+
+	public float maxSpeed;
+	public float groundRadius; 
 	public LayerMask whatIsGround;
+
+	public float gravityModifier;  
+	private Vector3 _moveDirection = Vector3.zero;
+	private CharacterController _controller;
+
+	private Vector2 _velocity;
+
+	
+	private bool _facingRight;
+	public bool isGrounded;
+
+	private Rigidbody2D _rigidBody2d;
 
 	void Start()
 	{
-		_rigidBody2d = GetComponent<Rigidbody2D>();
+		_rigidBody2d = GetComponent<Rigidbody2D>();	
+		_facingRight = true;
+	}
+
+	
+
+	void FixedUpdate()
+	{
+	
+		isGrounded = Physics2D.OverlapCircle( groundCheck.position , groundRadius, whatIsGround );
+			
+		float move = Input.GetAxis( "Horizontal" );
+
+		_rigidBody2d.velocity = new Vector2( move * maxSpeed, _rigidBody2d.velocity.y );
+
+		//Flip Sprite based on movement direction
+		if( move > 0 && !_facingRight )
+			Flip();
+		else if( move < 0 && _facingRight )
+			Flip();
+
+		if( _rigidBody2d.velocity.y < 0 )
+			_rigidBody2d.velocity += Vector2.up * Physics2D.gravity.y *( fallMultiplier - 1 ) * Time.deltaTime;
+		else if( _rigidBody2d.velocity.y > 0 && !Input.GetKey( KeyCode.Space ) )	
+			_rigidBody2d.velocity += Vector2.up * Physics2D.gravity.y *( lowFallMultiplier - 1 ) * Time.deltaTime;
 	}
 
 	void Update()
 	{
+		
+		
+		
 		if( isGrounded && Input.GetKeyDown( KeyCode.Space ) )
 		{
-			_rigidBody2d.AddForce( new Vector2( 0 , _jumpForce ) );
+			
+			_rigidBody2d.AddForce( new Vector2( 0, jumpForce  ) );
+	
 		}
-	}
-
-	void FixedUpdate()
-	{
 		
-		
-		isGrounded = Physics2D.OverlapCircle( groundCheck.position , groundRadius, whatIsGround );
-		
-		
-		
-		float move = Input.GetAxis( "Horizontal" );
-		_rigidBody2d.velocity = new Vector2( move * maxSpeed, _rigidBody2d.velocity.y );
-
-		if( move > 0 && !facingRight )
-			Flip();
-		else if( move < 0 && facingRight )
-			Flip();
 	}
 
 
 	void Flip()
 	{
-		facingRight = !facingRight;
+		_facingRight = !_facingRight;
 		Vector3 scale = transform.localScale;
 		scale.x *= -1;
 		transform.localScale = scale;	
