@@ -1,0 +1,9 @@
+{
+"TOTAL_MEMORY": 268435456,
+"dataUrl": "mario-2d-test.data.unityweb",
+"asmCodeUrl": "mario-2d-test.asm.code.unityweb",
+"asmMemoryUrl": "mario-2d-test.asm.memory.unityweb",
+"asmFrameworkUrl": "mario-2d-test.asm.framework.unityweb",
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20"
+}
