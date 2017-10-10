@@ -4,6 +4,7 @@ using UnityEngine;
 
 
 [ RequireComponent( typeof ( Rigidbody2D ) ) ]
+[ RequireComponent( typeof ( Animator ) ) ]
 
 public class Player : MonoBehaviour 
 {
@@ -33,14 +34,14 @@ public class Player : MonoBehaviour
 	public bool isGrounded;
 
 	private Rigidbody2D _rigidBody2d;
+	private Animator _animator;
 
 	void Start()
 	{
 		_rigidBody2d = GetComponent<Rigidbody2D>();	
+		_animator = GetComponent<Animator>();
 		_facingRight = true;
 	}
-
-	
 
 	void FixedUpdate()
 	{
@@ -50,6 +51,17 @@ public class Player : MonoBehaviour
 		float move = Input.GetAxis( "Horizontal" );
 
 		_rigidBody2d.velocity = new Vector2( move * maxSpeed, _rigidBody2d.velocity.y );
+
+		if( isGrounded && move != 0 )
+		{
+			_animator.SetBool( "Walk" , true );
+			
+		}
+		else if( !isGrounded || move == 0  )
+		{
+			_animator.SetBool( "Walk" , false );
+			
+		}
 
 		//Flip Sprite based on movement direction
 		if( move > 0 && !_facingRight )
@@ -61,18 +73,26 @@ public class Player : MonoBehaviour
 			_rigidBody2d.velocity += Vector2.up * Physics2D.gravity.y *( fallMultiplier - 1 ) * Time.deltaTime;
 		else if( _rigidBody2d.velocity.y > 0 && !Input.GetKey( KeyCode.Space ) )	
 			_rigidBody2d.velocity += Vector2.up * Physics2D.gravity.y *( lowFallMultiplier - 1 ) * Time.deltaTime;
+
+
+		if( isGrounded )
+		{
+			_animator.SetBool( "Jump" , false );
+		}
+		else
+		{
+			_animator.SetBool( "Jump" , true );
+		}	
+		
 	}
 
 	void Update()
 	{
 		
-		
-		
 		if( isGrounded && Input.GetKeyDown( KeyCode.Space ) )
 		{
-			
 			_rigidBody2d.AddForce( new Vector2( 0, jumpForce  ) );
-	
+			_animator.SetBool( "Jump" , true );
 		}
 		
 	}
