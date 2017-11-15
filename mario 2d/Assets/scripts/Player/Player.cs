@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
 	private CharacterController _controller;
 
 	private Vector2 _velocity;
+	private float move;
 
 	
 	private bool _facingRight;
@@ -58,15 +59,25 @@ public class Player : MonoBehaviour
 		} 
 	
 		isGrounded = Physics2D.OverlapCircle( groundCheck.position , groundRadius, whatIsGround );
-			
-		float move = Input.GetAxis( "Horizontal" );
+
+		
+		move = Input.GetAxis( "Horizontal" );
 
 		_rigidBody2d.velocity = new Vector2( move * maxSpeed, _rigidBody2d.velocity.y );
 
-		if( isGrounded && move != 0 )
+		if( move == 0 )
+		{
+			_animator.SetBool( "Move" , false );
+		}
+		else
+		{
+			_animator.SetBool( "Move" , true );
+		}
+
+
+	    if( isGrounded && move != 0 )
 		{
 			_animator.SetBool( "Walk" , true );
-			
 		}
 		else if( !isGrounded || move == 0  )
 		{
@@ -86,14 +97,7 @@ public class Player : MonoBehaviour
 			_rigidBody2d.velocity += Vector2.up * Physics2D.gravity.y *( lowFallMultiplier - 1 ) * Time.deltaTime;
 
 
-		if( isGrounded )
-		{
-			_animator.SetBool( "Jump" , false );
-		}
-		else
-		{
-			_animator.SetBool( "Jump" , true );
-		}	
+	
 		
 	}
 
@@ -107,9 +111,19 @@ public class Player : MonoBehaviour
 
 		if( isGrounded && Input.GetKeyDown( KeyCode.Space ) )
 		{
+			isGrounded = false;
 			_rigidBody2d.AddForce( new Vector2( 0, jumpForce  ) );
 			_animator.SetBool( "Jump" , true );
 		}
+
+		if( isGrounded )
+		{
+			_animator.SetBool( "Jump" , false );
+		}
+		else
+		{
+			_animator.SetBool( "Jump" , true );
+		}	
 		
 	}
 
@@ -122,6 +136,11 @@ public class Player : MonoBehaviour
 		transform.localScale = scale;	
 	}
 
+	public float Move
+	{
+		get{ return move; }
+		set{ move = value; }
+	}
 
 	public bool IsOkToMove
 	{

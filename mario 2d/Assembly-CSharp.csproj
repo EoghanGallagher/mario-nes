@@ -79,7 +79,6 @@
      <Compile Include="Assets\CreativeSpore\SuperTilemapEditor\Scripts\Utils\HandlesEx.cs" />
      <Compile Include="Assets\CreativeSpore\SuperTilemapEditor\Scripts\Utils\TilemapDrawingUtils.cs" />
      <Compile Include="Assets\CreativeSpore\SuperTilemapEditor\Scripts\Utils\TilemapUtils.cs" />
-     <Compile Include="Assets\Portal.cs" />
      <Compile Include="Assets\ProCamera2D\Code\Core\BasePC2D.cs" />
      <Compile Include="Assets\ProCamera2D\Code\Core\BaseTrigger.cs" />
      <Compile Include="Assets\ProCamera2D\Code\Core\BoundariesAnimator.cs" />
@@ -132,6 +131,7 @@
      <Compile Include="Assets\scripts\Player\PhysicsObject.cs" />
      <Compile Include="Assets\scripts\Player\Player.cs" />
      <Compile Include="Assets\scripts\Player\PlayerPlatformerController.cs" />
+     <Compile Include="Assets\scripts\Portal.cs" />
      <Compile Include="Assets\scripts\RayCastTest.cs" />
      <Compile Include="Assets\scripts\TestMario.cs" />
      <None Include="Assets\ProCamera2D\Code\Helpers\TransitionFX\Resources\PC2D_Circle.shader" />
