@@ -11,20 +11,22 @@ public class RayCastTest : MonoBehaviour
 	void FixedUpdate()
     {
     
-        
-		
 		RaycastHit2D hit = Physics2D.Raycast( transform.position , Vector2.up , 0.2f );
 
 		if( hit.collider != null  )
 		{
-			Debug.Log( "HIT : " + hit.collider.name ) ;
-
-			var q = hit.collider.GetComponent<QuestionBlock>();
 			
-			if( q != null && isHit == false )
+			if( hit.collider.name == "QuestionBlock" )
 			{
-				q.TriggerBounce();
-				isHit = true;
+
+				var q = hit.collider.GetComponent<QuestionBlock>();
+			
+				if( q != null && isHit == false )
+				{
+					q.TriggerBounce();
+					isHit = true;
+				}
+
 			}
 			
 		}

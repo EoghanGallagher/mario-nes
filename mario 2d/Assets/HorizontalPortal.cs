@@ -16,7 +16,7 @@ public class HorizontalPortal : MonoBehaviour
 
 	private IEnumerator Teleport()
 	{
-		yield return new WaitForSeconds( 2.0f );
+		yield return new WaitForSeconds( 1.0f );
 
 		Debug.Log( "Teleporting" );
 

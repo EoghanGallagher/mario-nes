@@ -117,6 +117,7 @@ public class QuestionBlock : MonoBehaviour
 				else
 				{
 					_bounceState = BounceState.Down;
+					PowerUpType( option );
 				}
 		}
 		else if( _bounceState == BounceState.Down )
@@ -137,7 +138,7 @@ public class QuestionBlock : MonoBehaviour
 					_bounceState = BounceState.None;
 					transform.position = _posBeforeBounce;
 
-					PowerUpType( option );
+					
 				
 				}
 		}
@@ -168,8 +169,10 @@ public class QuestionBlock : MonoBehaviour
 	//Powerups
 	private IEnumerator LoadPowerUps()
 	{
-		float yDist = 0.3f;
-		float powerUpVelocity = 1.0f;
+		powerUp.SetActive( true );
+		
+		float yDist = 0.125f;
+		float powerUpVelocity = 0.25f;
 		
 		Vector3 currentPosition = Vector3.zero;
 		
@@ -224,7 +227,6 @@ public class QuestionBlock : MonoBehaviour
 		{
 			currentPosition = coin.transform.position;
 
-			
 			
 			if( currentPosition.y <= positionBefore.y + yDist  && !moveDown )
 			{

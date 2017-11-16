@@ -10,9 +10,13 @@ public class GameManager : MonoBehaviour
 
 	private string level;  //Current Level
 
+	private string _startPoint;
+
 	void Awake()
 	{
 		level = LevelNames.w_1_1;
+
+
 		
 		//Check if instance alreay exists
 		if( instance == null )
@@ -41,5 +45,7 @@ public class GameManager : MonoBehaviour
 		LevelManager.LoadScene( LevelNames.w_1_1 );
 
 	}
+
+
 
 }
