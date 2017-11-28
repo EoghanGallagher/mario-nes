@@ -28,6 +28,21 @@ public class OneUpMushroom : MonoBehaviour
 
 	private float _verticalPos;
 
+
+
+	private void OnEnable()
+	{
+		
+
+		StartCoroutine( "Activate" );
+	}
+
+	private void Start()
+	{
+		_transform = transform;
+		_myBody = GetComponent<Rigidbody2D>();
+	}
+
 	private void FixedUpdate()
 	{
 		
@@ -45,10 +60,12 @@ public class OneUpMushroom : MonoBehaviour
 		//Fire Raycast in current movement direction
 		RaycastHit2D hit = Physics2D.Raycast( new Vector2( _transform.position.x , _transform.position.y - 0.16f ), currentDirection , 0.18f ,_enemyMask );
 		
-		if( hit.collider != null  )
+		if( hit.collider != null && hit.collider.name != "QuestionBlock"  )
 		{
+			Debug.Log( "HTI " + hit.collider.name );
 			_isBlocked = true;
 		}
+
 
 		//If collision occurs that is not the player or another enemy then change direction.
 		if( _isBlocked )
@@ -72,15 +89,7 @@ public class OneUpMushroom : MonoBehaviour
 			_isBlocked = false;	
 		}
 
-		//Check if falling
-		/*RaycastHit2D vHit = Physics2D.Raycast( new Vector2( _transform.position.x , _transform.position.y - 0.16f ),   Vector2.down , 0.18f , _enemyMask );
-		Debug.DrawRay(transform.position, Vector2.down , Color.green);
-
-		if( vHit.collider == null )
-		{
-			anim.SetBool( "" )
-		}*/
-
+	
 		//Move 
 		
 		if( _isAlive )
@@ -90,6 +99,20 @@ public class OneUpMushroom : MonoBehaviour
 			_myBody.velocity = myVal;
 		}
 	}
+
+	private IEnumerator Activate()
+	{
+		
+		yield return new WaitForSeconds( 1.0f );
+		
+		
+		_isAlive  = true;
+		_isLeft = true;
+		transform.parent = null;
+	}
+
+
+	
 
 	
 }

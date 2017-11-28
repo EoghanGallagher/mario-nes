@@ -169,7 +169,11 @@ public class QuestionBlock : MonoBehaviour
 	//Powerups
 	private IEnumerator LoadPowerUps()
 	{
+		
+		
 		powerUp.SetActive( true );
+		
+		Debug.Log( "Power Up Active" );
 		
 		float yDist = 0.125f;
 		float powerUpVelocity = 0.25f;
@@ -180,12 +184,15 @@ public class QuestionBlock : MonoBehaviour
 		
 		Vector3 positionBefore = powerUpTransform.position;
 
+		Debug.Log( "Before " + positionBefore.y  );
+
 		while( true )
 		{
 			currentPosition = powerUp.transform.position;
 			
 			if( currentPosition.y <= positionBefore.y + yDist )
 			{
+				Debug.Log( currentPosition.y );
 				powerUpTransform.Translate( powerUpVelocity * Vector2.up * Time.fixedDeltaTime );
 			}
 			else
@@ -195,7 +202,7 @@ public class QuestionBlock : MonoBehaviour
 
 			}
 
-			yield return null;
+			yield return powerUpVelocity;
 		}
 
 		

@@ -45,7 +45,7 @@ public class Goomba : MonoBehaviour
 		_myWidth = this.GetComponent<SpriteRenderer>().bounds.extents.x;
 		_anim = GetComponent<Animator>();
 
-		_isLeft = true;
+		_isLeft = false;
 
 	}
 
@@ -116,7 +116,8 @@ public class Goomba : MonoBehaviour
 		
 		if( _isAlive )
 		{ 
-			Vector2 myVal = _myBody.velocity;
+			
+Vector2 myVal = _myBody.velocity;
 			myVal.x = -_transform.right.x * _speed;
 			_myBody.velocity = myVal;
 		}
